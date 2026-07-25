@@ -172,11 +172,20 @@ export const highlighter = merge({}, commonConfig, {
   },
   target: 'webworker',
   plugins: [
-    new webpack.DefinePlugin(
-      Object.assign({}, replacements, {
-        __PROCESS_KIND__: JSON.stringify('highlighter'),
-      })
-    ),
+    new webpack.DefinePlugin({
+      __DARWIN__: replacements.__DARWIN__,
+      __WIN32__: replacements.__WIN32__,
+      __LINUX__: replacements.__LINUX__,
+      __APP_NAME__: replacements.__APP_NAME__,
+      __APP_VERSION__: replacements.__APP_VERSION__,
+      __DEV__: replacements.__DEV__,
+      __RELEASE_CHANNEL__: replacements.__RELEASE_CHANNEL__,
+      __SHA__: replacements.__SHA__,
+      'process.platform': replacements['process.platform'],
+      'process.env.NODE_ENV': replacements['process.env.NODE_ENV'],
+      'process.env.TEST_ENV': replacements['process.env.TEST_ENV'],
+      __PROCESS_KIND__: JSON.stringify('highlighter'),
+    }),
   ],
   resolve: {
     // We don't want to bundle all of CodeMirror in the highlighter. A web
