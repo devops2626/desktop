@@ -8,6 +8,11 @@ export const externals = ['7zip']
 
 const outputDir = 'out'
 export const replacements = getReplacements()
+const {
+  __OAUTH_CLIENT_ID__,
+  __OAUTH_SECRET__,
+  ...publicReplacements
+} = replacements
 
 const commonConfig: webpack.Configuration = {
   optimization: {
@@ -57,7 +62,7 @@ export const main = merge({}, commonConfig, {
   target: 'electron-main',
   plugins: [
     new webpack.DefinePlugin(
-      Object.assign({}, replacements, {
+      Object.assign({}, publicReplacements, {
         __PROCESS_KIND__: JSON.stringify('main'),
       })
     ),
@@ -94,7 +99,7 @@ export const renderer = merge({}, commonConfig, {
       }
     ),
     new webpack.DefinePlugin(
-      Object.assign({}, replacements, {
+      Object.assign({}, publicReplacements, {
         __PROCESS_KIND__: JSON.stringify('ui'),
       })
     ),
@@ -115,7 +120,7 @@ export const crash = merge({}, commonConfig, {
       chunks: ['crash'],
     }),
     new webpack.DefinePlugin(
-      Object.assign({}, replacements, {
+      Object.assign({}, publicReplacements, {
         __PROCESS_KIND__: JSON.stringify('crash'),
       })
     ),
@@ -127,7 +132,7 @@ export const cli = merge({}, commonConfig, {
   target: 'node',
   plugins: [
     new webpack.DefinePlugin(
-      Object.assign({}, replacements, {
+      Object.assign({}, publicReplacements, {
         __PROCESS_KIND__: JSON.stringify('cli'),
       })
     ),
